@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #前端模板
 1.vali-admin
 在此基础上进行二次开发
@@ -24,3 +25,7 @@
 4. 在IDEA中按maven project导入该项目，左侧目录会出现部分加粗黑体字，等安装好依赖后进入test目录下的DemoApplication运行main方法即可
 5. 在浏览器中输入http://localhost:8080即可访问，使用账号可查看数据库中user表。管理员账号密码为admin/1
 
+=======
+# donate
+a demo that imitates Shuidichou
+>>>>>>> 62d6fe238fdb838c2223551ba8c8a1347f87e8d4
