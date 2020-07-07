@@ -25,7 +25,6 @@
 4. 在IDEA中按maven project导入该项目，左侧目录会出现部分加粗黑体字，等安装好依赖后进入test目录下的DemoApplication运行main方法即可
 5. 在浏览器中输入http://localhost:8080 即可访问，使用账号可查看数据库中user表。管理员账号密码为admin/1
 
-=======
 # donate
 一个模仿水滴筹的demo
 >>>>>>>
