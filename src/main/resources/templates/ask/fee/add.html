@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta name="description"
+          content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+    <!-- Twitter meta-->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:site" content="@pratikborsadiya">
+    <meta property="twitter:creator" content="@pratikborsadiya"><!-- Open Graph Meta-->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Vali Admin">
+    <meta property="og:title" content="Vali - Free Bootstrap 4 admin theme">
+    <meta property="og:url" content="http://pratikborsadiya.in/blog/vali-admin">
+    <meta property="og:description"
+          content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+    <title>费用申请管理  - 众筹公益平台</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="../../../static/css/main.css"><!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+      <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+      <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+</head>
+  <body class="app sidebar-mini"><!-- Topbar menu-->
+  <div th:replace="~{commons/bar::topbar}"></div><!-- Sidebar menu-->
+  <div th:replace="~{commons/bar::sidebar}"></div>
+
+
+  <main class="app-content">
+      <div th:include="~{commons/bar::breadcrumb}"></div>
+      <div class="row">
+          <div class="col-md-12">
+              <div class="tile">
+                  <form action="list.html" th:action="@{/fee}" method="post">
+                      <div class="row">
+                          <div class="col-lg-4">
+                              <input type="hidden" name="_method" value="put" th:if="${fee!=null}"/>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="fid">费用申请表ID</label>
+                                  <input class="form-control" id="fid" name="fid" type="text" th:value="${fee!=null}?${fee.fid}">
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="rfe">门诊费用</label>
+                                  <input class="form-control" id="rfe" name="rfe" type="text" th:value="${fee!=null}?${fee.rfe}">
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="mfe">药品费用</label>
+                                  <input class="form-control" id="mfe" name="mfe" type="text" th:value="${fee!=null}?${fee.mfe}">
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="hfe">住院费用</label>
+                                  <input class="form-control" id="hfe" name="hfe" type="text" th:value="${fee!=null}?${fee.hfe}">
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="ofe">手术费用</label>
+                                  <input class="form-control" id="ofe" name="ofe" type="text" th:value="${fee!=null}?${fee.ofe}">
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="sfe">此次申请金额</label>
+                                  <input class="form-control" id="sfe" name="sfe" type="text" th:value="${fee!=null}?${fee.sfe}" th:readonly="readonly">
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="smoney">累计申请通过的金额</label>
+                                  <input class="form-control" id="smoney" name="smoney" type="text" th:value="${fee!=null}?${fee.smoney}" th:readonly="readonly">
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="fstate">审核状态</label>
+                                  <select class="form-control" id="fstate" name="fstate" >
+                                      <!--th:text是显示的内容，th.value提交的内容-->
+                                      <option th:selected="${fee!=null}?${fee.fstate==2}" th:value="2">未审核</option>
+                                      <option th:selected="${fee!=null}?${fee.fstate==0}" th:value="0">审核不通过</option>
+                                      <option th:selected="${fee!=null}?${fee.fstate==1}" th:value="1">审核通过</option>
+                                  </select>
+                              </div>
+                          </div>
+                          <div class="col-lg-4">
+                              <div class="form-group">
+                                  <label class="col-form-label" for="item.iid">众筹项目表ID</label>
+                                  <select class="form-control" id="item.iid" name="item.iid">
+                                      <!--th:text是显示的内容，th.value提交的内容-->
+                                      <option th:selected="${fee!=null}?${item.iid == fee.item.iid}" th:value="${item.iid}" th:each="item:${items}" th:text="${item.iid}+' '+ ${item.apply.hospital.hname} + ' ' + ${item.apply.patient.pname}"></option>
+                                  </select>
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="item.iname">众筹项目名字</label>
+                                  <input class="form-control" id="item.iname" name="item.iname" type="text" th:value="${fee!=null}?${fee.item.iname}" th:readonly="readonly">
+                              </div>
+
+                              <div class="form-group">
+                                  <label class="col-form-label" for="patient.pid">患者</label>
+                                  <input class="form-control" id="patient.pid" name="patient.pid" type="text" th:value="${fee!=null}?${fee.item.apply.patient.pid} + ' ' + ${fee.item.apply.patient.pname}" th:readonly="readonly">
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="hospital.hid">申请机构</label>
+                                  <input class="form-control" id="hospital.hid" name="hospital.hid" type="text" th:value="${fee!=null}?${fee.item.apply.hospital.hid} + ' ' + ${fee.item.apply.hospital.hname}" th:readonly="readonly">
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="item.imoney">已获捐赠金额金额</label>
+                                  <input class="form-control" id="item.imoney" name="item.imoney" type="text" th:value="${fee!=null}?${fee.item.imoney}" th:readonly="readonly">
+                              </div>
+                              <div class="tile-footer">
+                                  <button class="btn btn-primary" type="submit" th:text="${fee!=null}?'修改':'添加'">添加</button>
+                                  <a class="btn btn-danger" th:href="@{/fees}">返回</a>
+                              </div>
+                          </div>
+
+
+                      </div>
+                  </form>
+
+              </div>
+          </div>
+      </div>
+  </main>
+  <!-- Essential javascripts for application to work-->
+  <script src="../../../static/js/jquery-3.3.1.min.js"></script>
+  <script src="../../../static/js/popper.min.js"></script>
+  <script src="../../../static/js/bootstrap.min.js"></script>
+  <script src="../../../static/js/main.js"></script><!-- The javascript plugin to display page loading on top-->
+  <script src="../../../static/js/plugins/pace.min.js"></script><!-- Page specific javascripts--><!-- Data table plugin-->
+  <script type="text/javascript" src="../../../static/js/plugins/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="../../../static/js/plugins/dataTables.bootstrap.min.js"></script>
+  <script src="../../../static/js/plugins/moment-with-locales.min.js"></script>
+  <script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+
+  <script type="text/javascript">$('#sampleTable').DataTable();</script><!-- Google analytics script-->
+  <script type="text/javascript"> if (document.location.hostname == 'pratikborsadiya.in') {
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'UA-72504830-1', 'auto');
+    ga('send', 'pageview');
+}</script>
+  <script type="text/javascript">
+      $(function () {
+          $("#datetimepicker2").datetimepicker({
+              format: "YYYY-MM-DD",
+              locale: moment.locale("zh-cn")
+          });
+          $("#datetimepicker1").datetimepicker({
+              format: "YYYY-MM-DD",
+              locale: moment.locale("zh-cn")
+          });
+      });
+  </script>
+  </body>
+</html>

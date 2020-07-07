@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.donate.mapper.ApplyMapper">
+  <resultMap id="BaseResultMap" type="com.example.donate.bean.Apply">
+    <id column="aid" jdbcType="VARCHAR" property="aid" />
+    <result column="addl" jdbcType="TIMESTAMP" property="addl" />
+    <result column="amoney" jdbcType="REAL" property="amoney" />
+    <result column="astate" jdbcType="INTEGER" property="astate" />
+  </resultMap>
+  <resultMap id="ApplyResultMap" type="com.example.donate.bean.Apply">
+    <id column="aid" jdbcType="VARCHAR" property="aid" />
+    <result column="addl" jdbcType="TIMESTAMP" property="addl" />
+    <result column="amoney" jdbcType="REAL" property="amoney" />
+    <result column="astate" jdbcType="INTEGER" property="astate" />
+    <!--
+    <association property="patient" javaType="com.example.donate.bean.Patient" resultMap="PatientResultMap"/>
+    <association property="hospital" javaType="com.example.donate.bean.Hospital" resultMap="HospitalResultMap"/>
+    -->
+    <association property="patient" column="pid" select="com.example.donate.mapper.PatientMapper.selectByPrimaryKey"/>
+    <association property="hospital" column="hid" select="com.example.donate.mapper.HospitalMapper.selectByPrimaryKey"/>
+  </resultMap>
+<!--
+  <resultMap id="HospitalResultMap" type="com.example.donate.bean.Hospital">
+    <id column="hid" jdbcType="VARCHAR" property="hid" />
+    <result column="hname" jdbcType="VARCHAR" property="hname" />
+    <result column="htel" jdbcType="VARCHAR" property="htel" />
+    <result column="hqualification" jdbcType="VARCHAR" property="hqualification" />
+    <result column="haddress" jdbcType="VARCHAR" property="haddress" />
+  </resultMap>
+  <resultMap id="PatientResultMap" type="com.example.donate.bean.Patient">
+    <id column="pid" jdbcType="CHAR" property="pid" />
+    <result column="pname" jdbcType="VARCHAR" property="pname" />
+    <result column="ptel" jdbcType="VARCHAR" property="ptel" />
+    <result column="phome" jdbcType="VARCHAR" property="phome" />
+    <result column="pstory" jdbcType="VARCHAR" property="pstory" />
+    <result column="psick" jdbcType="VARCHAR" property="psick" />
+    <result column="ptreat" jdbcType="VARCHAR" property="ptreat" />
+  </resultMap>
+  -->
+  <sql id="Base_Column_List">
+    aid, addl, amoney, astate, pid
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ApplyResultMap">
+    select *
+    from apply as a left join patient as b
+    on a.pid = b.pid left join hospital as c
+    on a.hid = c.hid
+    where aid = #{aid,jdbcType=VARCHAR}
+  </select>
+  <select id="showList" parameterType="java.lang.String" resultMap="ApplyResultMap">
+    select *
+    from apply as a left join patient as b
+    on a.pid = b.pid left join hospital as c
+    on a.hid = c.hid
+  </select>
+  <select id="passList" parameterType="java.lang.String" resultMap="ApplyResultMap">
+    select *
+    from apply
+    where apply.astate = 1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from apply
+    where aid = #{aid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.example.donate.bean.Apply">
+    insert into apply (aid, addl, amoney,
+      astate, pid, hid)
+    values (#{aid,jdbcType=VARCHAR}, #{addl,jdbcType=TIMESTAMP}, #{amoney,jdbcType=REAL},
+      #{astate,jdbcType=INTEGER}, #{patient.pid,jdbcType=CHAR},#{hospital.hid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.donate.bean.Apply">
+    insert into apply
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="aid != null">
+        aid,
+      </if>
+      <if test="addl != null">
+        addl,
+      </if>
+      <if test="amoney != null">
+        amoney,
+      </if>
+      <if test="astate != null">
+        astate,
+      </if>
+      <if test="patient.pid!= null">
+        pid,
+      </if>
+      <if test="hospital.hid!= null">
+        hid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="aid != null">
+        #{aid,jdbcType=VARCHAR},
+      </if>
+      <if test="addl != null">
+        #{addl,jdbcType=TIMESTAMP},
+      </if>
+      <if test="amoney != null">
+        #{amoney,jdbcType=REAL},
+      </if>
+      <if test="astate != null">
+        #{astate,jdbcType=INTEGER},
+      </if>
+      <if test="patient.pid != null">
+        #{patient.pid,jdbcType=CHAR},
+      </if>
+      <if test="hospital.hid != null">
+        #{hospital.hid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.donate.bean.Apply">
+    update apply
+    <set>
+      <if test="addl != null">
+        addl = #{addl,jdbcType=TIMESTAMP},
+      </if>
+      <if test="amoney != null">
+        amoney = #{amoney,jdbcType=REAL},
+      </if>
+      <if test="astate != null">
+        astate = #{astate,jdbcType=INTEGER},
+      </if>
+      <if test="patient.pid != null">
+        pid = #{patient.pid,jdbcType=CHAR},
+      </if>
+      <if test="hospital.hid != null">
+        hid = #{hospital.hid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where aid = #{aid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.donate.bean.Apply">
+    update apply
+    set addl = #{addl,jdbcType=TIMESTAMP},
+      amoney = #{amoney,jdbcType=REAL},
+      astate = #{astate,jdbcType=INTEGER},
+      pid = #{patient.pid,jdbcType=CHAR},
+      hid = #{hospital.hid,jdbcType=VARCHAR}
+    where aid = #{aid,jdbcType=VARCHAR}
+  </update>
+
+</mapper>

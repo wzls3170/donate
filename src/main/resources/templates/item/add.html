@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta name="description"
+          content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+    <!-- Twitter meta-->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:site" content="@pratikborsadiya">
+    <meta property="twitter:creator" content="@pratikborsadiya"><!-- Open Graph Meta-->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Vali Admin">
+    <meta property="og:title" content="Vali - Free Bootstrap 4 admin theme">
+    <meta property="og:url" content="http://pratikborsadiya.in/blog/vali-admin">
+    <meta property="og:description"
+          content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+    <title>众筹项目管理  - 众筹公益平台</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="../../../static/css/main.css"><!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+      <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+      <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+</head>
+  <body class="app sidebar-mini"><!-- Topbar menu-->
+  <div th:replace="~{commons/bar::topbar}"></div><!-- Sidebar menu-->
+  <div th:replace="~{commons/bar::sidebar}"></div>
+
+
+  <main class="app-content">
+      <div th:include="~{commons/bar::breadcrumb}"></div>
+      <div class="row">
+          <div class="col-md-12">
+              <div class="tile">
+                  <form action="list.html" th:action="@{/item}" method="post">
+                      <div class="row">
+                          <div class="col-lg-4">
+                              <input type="hidden" name="_method" value="put" th:if="${item!=null}"/>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="iid">众筹项目ID</label>
+                                  <input class="form-control" id="iid" name="iid" type="text" th:value="${item!=null}?${item.iid}">
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="iname">众筹项目名字</label>
+                                  <input class="form-control" id="iname" name="iname" type="text" th:value="${item!=null}?${item.iname}">
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="apply.aid">众筹申请表ID</label>
+                                  <select class="form-control" id="apply.aid" name="apply.aid">
+                                      <!--th:text是显示的内容，th.value提交的内容-->
+                                      <option th:selected="${item!=null}?${apply.aid == item.apply.aid}" th:value="${apply.aid}" th:each="apply:${applies}" th:text="${apply.aid}+' '+ ${apply.hospital.hname} + ' ' + ${apply.patient.pname}"></option>
+                                  </select>
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="patient.pid">患者</label>
+                                  <input class="form-control" id="patient.pid" name="patient.pid" type="text" th:value="${item!=null}?${item.apply.patient.pid}" th:readonly="readonly">
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="patient.ptel">电话</label>
+                                  <input class="form-control" id="patient.ptel" name="patient.ptel" type="text" th:value="${item!=null}?${item.apply.patient.ptel}" th:readonly="readonly">
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="patient.phome">患者地址</label>
+                                  <input class="form-control" id="patient.phome" name="patient.phome" type="text" th:value="${item!=null}?${item.apply.patient.phome}" th:readonly="readonly">
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="pstory">患者故事</label>
+                                  <textarea rows="6" cols="6" class="form-control" id="pstory" name="pstory"  th:text="${item!=null}?${item.apply.patient.pstory}" th:readonly="readonly">
+                                  </textarea>
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="patient.psick">病情信息</label>
+                                  <textarea rows="6" cols="6" class="form-control" id="patient.psick" name="patient.psick" th:text="${item!=null}?${item.apply.patient.psick}" th:readonly="readonly">
+                                  </textarea>
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="patient.ptreat">治疗情况</label>
+                                  <textarea rows="6" cols="6" class="form-control" id="patient.ptreat" name="patient.ptreat" type="textarea" th:text="${item!=null}?${item.apply.patient.ptreat}" th:readonly="readonly">
+                                  </textarea>
+                              </div>
+                          </div>
+                          <div class="col-lg-4">
+
+                              <div class="form-group">
+                                  <label class="col-form-label" for="hospital.hid">申请机构</label>
+                                  <input class="form-control" id="hospital.hid" name="hospital.hid" type="text" th:value="${item!=null}?${item.apply.hospital.hid} + ' ' + ${item.apply.hospital.hname}" th:readonly="readonly">
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="hqualification">医疗机构资质</label>
+                                  <input class="form-control" id="hqualification" name="hqualification" type="text" th:value="${item!=null}?${item.apply.hospital.hqualification}" th:readonly="readonly">
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="addl">众筹申请期限</label>
+                                  <div class='input-group date' id='datetimepicker1'>
+                                      <input class="form-control" id="addl" name="addl" type="text" th:value="${item!=null}?${#dates.format(item.apply.addl,'yyyy-MM-dd')}" th:readonly="readonly" />
+                                      <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                      </span>
+                                  </div>
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="amoney">所需金额</label>
+                                  <input class="form-control" id="amoney" name="amoney" type="text" th:value="${item!=null}?${item.apply.amoney}" th:readonly="readonly">
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="iddl">众筹项目截止日期</label>
+                                  <div class='input-group date' id='datetimepicker2'>
+                                    <input class="form-control" id="iddl" name="iddl" type="text" th:value="${item!=null}?${#dates.format(item.iddl,'yyyy-MM-dd')}">
+                                      <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                      </span>
+                                  </div>
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="iprogress">筹款进度</label>
+                                  <select class="form-control" id="iprogress" name="iprogress" >
+                                      <!--th:text是显示的内容，th.value提交的内容-->
+                                      <option th:selected="${item!=null}?${item.iprogress==0}" th:value="0">未结束</option>
+                                      <option th:selected="${item!=null}?${item.iprogress==1}" th:value="1">已结束</option>
+                                  </select>
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="imoney">已获捐赠金额金额</label>
+                                  <input class="form-control" id="imoney" name="imoney" type="text" th:value="${item!=null}?${item.imoney}" th:readonly="readonly">
+                              </div>
+                              <div class="tile-footer">
+                                  <button class="btn btn-primary" type="submit" th:text="${item!=null}?'修改':'添加'">添加</button>
+                                  <a class="btn btn-sm btn-success" th:href="@{/idonate}">我要捐款</a>
+                                  <a class="btn btn-danger" th:href="@{/items}">返回</a>
+                              </div>
+                          </div>
+
+                      </div>
+                  </form>
+
+              </div>
+          </div>
+      </div>
+  </main>
+  <!-- Essential javascripts for application to work-->
+  <script src="../../../static/js/jquery-3.3.1.min.js"></script>
+  <script src="../../../static/js/popper.min.js"></script>
+  <script src="../../../static/js/bootstrap.min.js"></script>
+  <script src="../../../static/js/main.js"></script><!-- The javascript plugin to display page loading on top-->
+  <script src="../../../static/js/plugins/pace.min.js"></script><!-- Page specific javascripts--><!-- Data table plugin-->
+  <script type="text/javascript" src="../../../static/js/plugins/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="../../../static/js/plugins/dataTables.bootstrap.min.js"></script>
+  <script src="../../../static/js/plugins/moment-with-locales.min.js"></script>
+  <script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+
+  <script type="text/javascript">$('#sampleTable').DataTable();</script><!-- Google analytics script-->
+  <script type="text/javascript"> if (document.location.hostname == 'pratikborsadiya.in') {
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'UA-72504830-1', 'auto');
+    ga('send', 'pageview');
+}</script>
+  <script type="text/javascript">
+      $(function () {
+          $("#datetimepicker2").datetimepicker({
+              format: "YYYY-MM-DD",
+              locale: moment.locale("zh-cn")
+          });
+          $("#datetimepicker1").datetimepicker({
+              format: "YYYY-MM-DD",
+              locale: moment.locale("zh-cn")
+          });
+      });
+  </script>
+  </body>
+</html>

@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    name: donate  #数据库名
+    url: jdbc:mysql://localhost:3306/donate #url
+    username: root  #用户名
+    password: root  #密码
+    driver-class-name: com.mysql.jdbc.Driver  #数据库链接驱动
+  mvc:
+    date-format: yyyy-MM-dd # 日期的格式化；SpringMvc将页面提交的值转换为指定的类型。页面是String类型，后台是Date类型
+    static-path-pattern: /static/**  #解决无法加载css，js的问题
+    hiddenmethod:
+      filter:
+        enabled: true  #解决组件无法将POST转换为PUT请求解决的办法
+
+  thymeleaf:
+    cache: false  #禁用缓存
+    prefix: classpath:/templates/  #prefix：指定模板所在的目录
+mybatis:
+  mapper-locations: classpath:mapper/*.xml  #配置映射文件
+  type-aliases-package: com.example.donate.bean #配置实体类

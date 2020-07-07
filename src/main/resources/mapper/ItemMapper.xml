@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.donate.mapper.ItemMapper">
+  <resultMap id="BaseResultMap" type="com.example.donate.bean.Item">
+    <id column="iid" jdbcType="VARCHAR" property="iid" />
+    <result column="iname" jdbcType="VARCHAR" property="iname" />
+    <result column="iddl" jdbcType="TIMESTAMP" property="iddl" />
+    <result column="iprogress" jdbcType="INTEGER" property="iprogress" />
+    <result column="imoney" jdbcType="REAL" property="imoney" />
+  </resultMap>
+  <resultMap id="ItemResultMap" type="com.example.donate.bean.Item">
+    <id column="iid" jdbcType="VARCHAR" property="iid" />
+    <result column="iname" jdbcType="VARCHAR" property="iname" />
+    <result column="iddl" jdbcType="TIMESTAMP" property="iddl" />
+    <result column="iprogress" jdbcType="INTEGER" property="iprogress" />
+    <result column="imoney" jdbcType="REAL" property="imoney" />
+    <association property="apply" column="aid" select="com.example.donate.mapper.ApplyMapper.selectByPrimaryKey"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    iid, aid, iname, iddl, iprogress, imoney
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ItemResultMap">
+   select *
+    from item as d left join apply as a
+    on d.aid = a.aid left join hospital as c
+    on a.hid = c.hid left join patient as b
+    on a.pid = b.pid
+    where iid = #{iid,jdbcType=VARCHAR}
+  </select>
+
+  <select id="passList" parameterType="java.lang.String" resultMap="ItemResultMap">
+  select *
+  from item
+  where iprogress = 1
+  </select>
+  <select id="nopassList" parameterType="java.lang.String" resultMap="ItemResultMap">
+  select *
+  from item
+  where iprogress = 0
+  </select>
+  <select id="showList" parameterType="java.lang.String" resultMap="ItemResultMap">
+    select *
+    from item as d left join apply as a
+    on d.aid = a.aid left join hospital as c
+    on a.hid = c.hid left join patient as b
+    on a.pid = b.pid
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from item
+    where iid = #{iid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.example.donate.bean.Item">
+    insert into item (iid, aid, iname, 
+      iddl, iprogress, imoney
+      )
+    values (#{iid,jdbcType=VARCHAR}, #{apply.aid,jdbcType=VARCHAR}, #{iname,jdbcType=VARCHAR},
+      #{iddl,jdbcType=TIMESTAMP}, #{iprogress,jdbcType=INTEGER}, #{imoney,jdbcType=REAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.donate.bean.Item">
+    insert into item
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="iid != null">
+        iid,
+      </if>
+      <if test="apply.aid != null">
+        aid,
+      </if>
+      <if test="iname != null">
+        iname,
+      </if>
+      <if test="iddl != null">
+        iddl,
+      </if>
+      <if test="iprogress != null">
+        iprogress,
+      </if>
+      <if test="imoney != null">
+        imoney,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="iid != null">
+        #{iid,jdbcType=VARCHAR},
+      </if>
+      <if test="apply.aid != null">
+        #{apply.aid,jdbcType=VARCHAR},
+      </if>
+      <if test="iname != null">
+        #{iname,jdbcType=VARCHAR},
+      </if>
+      <if test="iddl != null">
+        #{iddl,jdbcType=TIMESTAMP},
+      </if>
+      <if test="iprogress != null">
+        #{iprogress,jdbcType=INTEGER},
+      </if>
+      <if test="imoney != null">
+        #{imoney,jdbcType=REAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.donate.bean.Item">
+    update item
+    <set>
+      <if test="apply.aid != null">
+        aid = #{apply.aid,jdbcType=VARCHAR},
+      </if>
+      <if test="iname != null">
+        iname = #{iname,jdbcType=VARCHAR},
+      </if>
+      <if test="iddl != null">
+        iddl = #{iddl,jdbcType=TIMESTAMP},
+      </if>
+      <if test="iprogress != null">
+        iprogress = #{iprogress,jdbcType=INTEGER},
+      </if>
+      <if test="imoney != null">
+        imoney = #{imoney,jdbcType=REAL},
+      </if>
+    </set>
+    where iid = #{iid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.donate.bean.Item">
+    update item
+    set aid = #{apply.aid,jdbcType=VARCHAR},
+      iname = #{iname,jdbcType=VARCHAR},
+      iddl = #{iddl,jdbcType=TIMESTAMP},
+      iprogress = #{iprogress,jdbcType=INTEGER},
+      imoney = #{imoney,jdbcType=REAL}
+    where iid = #{iid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateimoney" parameterType="com.example.donate.bean.Item">
+   update item
+   set imoney = (
+    select tmp_sum
+        from(
+            select iid,sum(dimoney) as tmp_sum
+            from idonate
+            where distate = 1
+            group by iid
+        )as tmp
+     where item.iid = tmp.iid
+    )
+  </update>
+
+</mapper>

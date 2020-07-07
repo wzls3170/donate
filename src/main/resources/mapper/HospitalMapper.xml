@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.donate.mapper.HospitalMapper">
+  <resultMap id="BaseResultMap" type="com.example.donate.bean.Hospital">
+    <id column="hid" jdbcType="VARCHAR" property="hid" />
+    <result column="hname" jdbcType="VARCHAR" property="hname" />
+    <result column="htel" jdbcType="VARCHAR" property="htel" />
+    <result column="hqualification" jdbcType="VARCHAR" property="hqualification" />
+    <result column="haddress" jdbcType="VARCHAR" property="haddress" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    hid, hname, htel, hqualification, haddress
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hospital
+    where hid = #{hid,jdbcType=VARCHAR}
+  </select>
+  <select id="showList" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from hospital
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from hospital
+    where hid = #{hid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.example.donate.bean.Hospital">
+    insert into hospital (hid, hname, htel, 
+      hqualification, haddress)
+    values (#{hid,jdbcType=VARCHAR}, #{hname,jdbcType=VARCHAR}, #{htel,jdbcType=VARCHAR}, 
+      #{hqualification,jdbcType=VARCHAR}, #{haddress,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.donate.bean.Hospital">
+    insert into hospital
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="hid != null">
+        hid,
+      </if>
+      <if test="hname != null">
+        hname,
+      </if>
+      <if test="htel != null">
+        htel,
+      </if>
+      <if test="hqualification != null">
+        hqualification,
+      </if>
+      <if test="haddress != null">
+        haddress,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="hid != null">
+        #{hid,jdbcType=VARCHAR},
+      </if>
+      <if test="hname != null">
+        #{hname,jdbcType=VARCHAR},
+      </if>
+      <if test="htel != null">
+        #{htel,jdbcType=VARCHAR},
+      </if>
+      <if test="hqualification != null">
+        #{hqualification,jdbcType=VARCHAR},
+      </if>
+      <if test="haddress != null">
+        #{haddress,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.donate.bean.Hospital">
+    update hospital
+    <set>
+      <if test="hname != null">
+        hname = #{hname,jdbcType=VARCHAR},
+      </if>
+      <if test="htel != null">
+        htel = #{htel,jdbcType=VARCHAR},
+      </if>
+      <if test="hqualification != null">
+        hqualification = #{hqualification,jdbcType=VARCHAR},
+      </if>
+      <if test="haddress != null">
+        haddress = #{haddress,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where hid = #{hid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.donate.bean.Hospital">
+    update hospital
+    set hname = #{hname,jdbcType=VARCHAR},
+      htel = #{htel,jdbcType=VARCHAR},
+      hqualification = #{hqualification,jdbcType=VARCHAR},
+      haddress = #{haddress,jdbcType=VARCHAR}
+    where hid = #{hid,jdbcType=VARCHAR}
+  </update>
+</mapper>

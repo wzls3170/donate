@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.donate.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.example.donate.bean.User">
+    <id column="uid" jdbcType="VARCHAR" property="uid" />
+    <result column="upsw" jdbcType="VARCHAR" property="upsw" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    uid, upsw
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where uid = #{uid,jdbcType=VARCHAR}
+  </select>
+  <select id="login" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where uid = #{uid,jdbcType=VARCHAR} AND upsw = #{upsw,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from user
+    where uid = #{uid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.example.donate.bean.User">
+    insert into user (uid, upsw)
+    values (#{uid,jdbcType=VARCHAR}, #{upsw,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.donate.bean.User">
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="upsw != null">
+        upsw,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="upsw != null">
+        #{upsw,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.donate.bean.User">
+    update user
+    <set>
+      <if test="upsw != null">
+        upsw = #{upsw,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where uid = #{uid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.donate.bean.User">
+    update user
+    set upsw = #{upsw,jdbcType=VARCHAR}
+    where uid = #{uid,jdbcType=VARCHAR}
+  </update>
+</mapper>

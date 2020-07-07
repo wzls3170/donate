@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta name="description"
+          content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+    <!-- Twitter meta-->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:site" content="@pratikborsadiya">
+    <meta property="twitter:creator" content="@pratikborsadiya"><!-- Open Graph Meta-->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Vali Admin">
+    <meta property="og:title" content="Vali - Free Bootstrap 4 admin theme">
+    <meta property="og:url" content="http://pratikborsadiya.in/blog/vali-admin">
+    <meta property="og:description"
+          content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+    <title>患者信息管理 - 众筹公益平台</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="../../../static/css/main.css"><!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+  <body class="app sidebar-mini"><!-- Topbar menu-->
+  <div th:replace="~{commons/bar::topbar}"></div><!-- Sidebar menu-->
+  <div th:replace="~{commons/bar::sidebar}"></div>
+  <main class="app-content">
+      <div th:include="~{commons/bar::breadcrumb}"></div>
+      <div class="row">
+          <div class="col-md-12">
+              <div class="tile">
+                  <div class="row">
+                      <div class="col-lg-4">
+                          <form action="list.html" th:action="@{/patient}" method="post">
+                              <input type="hidden" name="_method" value="put" th:if="${patient!=null}"/>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="pid">身份证号</label>
+                                  <input class="form-control" id="pid" name="pid" type="text" th:value="${patient!=null}?${patient.pid}">
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="pname">名字</label>
+                                  <input class="form-control" id="pname" name="pname" type="text" th:value="${patient!=null}?${patient.pname}" >
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="ptel">电话</label>
+                                  <input class="form-control" id="ptel" name="ptel" type="text" th:value="${patient!=null}?${patient.ptel}">
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="phome">患者地址</label>
+                                  <input class="form-control" id="phome" name="phome" type="text" th:value="${patient!=null}?${patient.phome}">
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="pstory">患者故事</label>
+                                  <textarea rows="6" cols="6" class="form-control" id="pstory" name="pstory"  th:text="${patient!=null}?${patient.pstory}">
+                                  </textarea>
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="psick">病情信息</label>
+                                  <textarea rows="6" cols="6" class="form-control" id="psick" name="psick" th:text="${patient!=null}?${patient.psick}">
+                                  </textarea>
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="ptreat">治疗情况</label>
+                                  <textarea rows="6" cols="6" class="form-control" id="ptreat" name="ptreat" type="textarea" th:text="${patient!=null}?${patient.ptreat}">
+                                  </textarea>
+                              </div>
+                              <div class="tile-footer">
+                                  <button class="btn btn-primary" type="submit" th:text="${patient!=null}?'修改':'添加'">添加</button>
+                                  <a class="btn btn-danger" th:href="@{/patients}">返回</a>
+                              </div>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </main>
+  <!-- Essential javascripts for application to work-->
+  <script src="../../../static/js/jquery-3.3.1.min.js"></script>
+  <script src="../../../static/js/popper.min.js"></script>
+  <script src="../../../static/js/bootstrap.min.js"></script>
+  <script src="../../../static/js/main.js"></script><!-- The javascript plugin to display page loading on top-->
+  <script src="../../../static/js/plugins/pace.min.js"></script><!-- Page specific javascripts--><!-- Data table plugin-->
+  <script type="text/javascript" src="../../../static/js/plugins/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="../../../static/js/plugins/dataTables.bootstrap.min.js"></script>
+  <script type="text/javascript">$('#sampleTable').DataTable();</script><!-- Google analytics script-->
+  <script type="text/javascript"> if (document.location.hostname == 'pratikborsadiya.in') {
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'UA-72504830-1', 'auto');
+    ga('send', 'pageview');
+}</script>
+  </body>
+</html>

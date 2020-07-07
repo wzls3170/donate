@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta name="description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+    <!-- Twitter meta-->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:site" content="@pratikborsadiya">
+    <meta property="twitter:creator" content="@pratikborsadiya">
+    <!-- Open Graph Meta-->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Vali Admin">
+    <meta property="og:title" content="Vali - Free Bootstrap 4 admin theme">
+    <meta property="og:url" content="http://pratikborsadiya.in/blog/vali-admin">
+    <meta property="og:description" content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+    <title>费用申请管理 - 众筹公益平台</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="../../../static/css/main.css">
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body class="app sidebar-mini">
+
+    <!-- Topbar menu-->
+    <div th:include="~{commons/bar::topbar}"></div>
+    <!-- Sidebar menu-->
+    <div th:include="~{commons/bar::sidebar}"></div>
+
+    <main class="app-content">
+     <!-- breadcrumb side-->
+        <div th:include="~{commons/bar::breadcrumb}"></div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tile">
+                    <div class="tile-body">
+                        <a class="btn btn-sm btn-success" th:href="@{/fee}">添加</a>
+                        <div class="table-responsive">
+                        <table class="table table-hover table-bordered" id="sampleTable">
+                            <thead>
+                            <tr>
+                                <th>费用申请表ID</th>
+                                <th>众筹项目申请表ID</th>
+                                <!--
+                                <th>门诊费用</th>
+                                <th>药品费用</th>
+                                <th>住院费用</th>
+                                <th>手术费用</th>
+                                -->
+
+                                <th>此次申请总费用</th>
+                                <th>累计申请通过的金额</th>
+                                <th>已获得捐赠金额</th>
+                                <th>申请状态</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="fee: ${fees}">
+                                <td th:text="${fee.fid}"></td>
+                                <td th:text="${fee.item.iid}"></td>
+                                <!--
+                                <td th:text="${fee.rfe}"></td>
+                                 <td th:text="${fee.mfe}"></td>
+                                <td th:text="${fee.hfe}"></td>
+                                <td th:text="${fee.ofe}"></td>
+                             -->
+                             <td th:text="${fee.sfe}"></td>
+                             <td th:text="${fee.smoney}"></td>
+                             <td th:text="${fee.item.imoney}"></td>
+                             <td th:text="${fee.fstate}==2?'未审核':(${fee.fstate}==1?'审核通过':'审核不通过')"></td>
+                             <td>
+                                 <a class="btn btn-sm btn-primary" th:href="@{fee/}+${fee.fid}">查看详情</a>
+                                 <button th:attr="del_uri=@{/fee/}+${fee.fid}" class="btn btn-sm btn-danger deleteBtn">删除</button>
+                             </td>
+                         </tr>
+                         </tbody>
+                     </table>
+                 </div>
+             </div>
+             </div>
+         </div>
+     </div>
+ </main>
+ <form id="deleteStuForm"  method="post">
+     <input type="hidden" name="_method" value="delete"/>
+ </form>
+ <!--表单放外面，给按钮绑定deleteBtn.用JS来改-->
+
+    <!-- Essential javascripts for application to work-->
+    <script src="../../../static/js/jquery-3.3.1.min.js"></script>
+    <script src="../../../static/js/popper.min.js"></script>
+    <script src="../../../static/js/bootstrap.min.js"></script>
+    <script src="../../../static/js/main.js"></script>
+    <!-- The javascript plugin to display page loading on top-->
+    <script src="../../../static/js/plugins/pace.min.js"></script>
+    <!-- Page specific javascripts-->
+    <!-- Data table plugin-->
+    <script type="text/javascript" src="../../../static/js/plugins/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="../../../static/js/plugins/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript">$('#sampleTable').DataTable();</script>
+    <!-- Google analytics script-->
+    <script type="text/javascript">
+    if(document.location.hostname == 'pratikborsadiya.in') {
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-72504830-1', 'auto');
+        ga('send', 'pageview');
+    }
+    </script>
+    <script type="text/javascript">
+        $(".deleteBtn").click(function(){
+            $("#deleteStuForm").attr("action",$(this).attr("del_uri")).submit();
+            return false;
+        });
+    </script>
+    <script type="text/javascript">
+        $(".deleteBtn").click(function(){
+            $("#deleteStuForm").attr("action",$(this).attr("del_uri")).submit();
+            return false;
+        });
+    </script>
+</body>
+</html>

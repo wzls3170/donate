@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.donate.mapper.IdonateMapper">
+  <resultMap id="IdonateResultMap" type="com.example.donate.bean.Idonate">
+    <id column="idoid" jdbcType="INTEGER" property="idoid" />
+    <result column="dimoney" jdbcType="REAL" property="dimoney" />
+    <result column="distate" jdbcType="INTEGER" property="distate" />
+    <association property="donor" column="did" select="com.example.donate.mapper.DonorMapper.selectByPrimaryKey"/>
+    <association property="item" column="iid" select="com.example.donate.mapper.ItemMapper.selectByPrimaryKey"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    idoid, did, iid, dimoney, distate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="IdonateResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from idonate
+    where idoid = #{idoid,jdbcType=INTEGER}
+  </select>
+  <select id="showList" parameterType="java.lang.Integer" resultMap="IdonateResultMap">
+    select *
+    from idonate
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from idonate
+    where idoid = #{idoid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.donate.bean.Idonate">
+    insert into idonate (idoid, did, iid,
+      dimoney, distate)
+    values (#{idoid,jdbcType=INTEGER}, #{donor.did,jdbcType=VARCHAR}, #{item.iid,jdbcType=VARCHAR},
+      #{dimoney,jdbcType=REAL}, #{distate,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.donate.bean.Idonate">
+    insert into idonate
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="idoid != null">
+        idoid,
+      </if>
+      <if test="donor.did != null">
+        did,
+      </if>
+      <if test="item.iid != null">
+        iid,
+      </if>
+      <if test="dimoney != null">
+        dimoney,
+      </if>
+      <if test="distate != null">
+        distate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="idoid != null">
+        #{idoid,jdbcType=INTEGER},
+      </if>
+      <if test="donor.did != null">
+        #{donor.did,jdbcType=VARCHAR},
+      </if>
+      <if test="item.iid != null">
+        #{item.iid,jdbcType=VARCHAR},
+      </if>
+      <if test="dimoney != null">
+        #{dimoney,jdbcType=REAL},
+      </if>
+      <if test="distate != null">
+        #{distate,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.donate.bean.Idonate">
+    update idonate
+    <set>
+      <if test="donor.did != null">
+        did = #{donor.did,jdbcType=VARCHAR},
+      </if>
+      <if test="item.iid != null">
+        iid = #{item.iid,jdbcType=VARCHAR},
+      </if>
+      <if test="dimoney != null">
+        dimoney = #{dimoney,jdbcType=REAL},
+      </if>
+      <if test="distate != null">
+        distate = #{distate,jdbcType=INTEGER},
+      </if>
+    </set>
+    where idoid = #{idoid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.donate.bean.Idonate">
+    update idonate
+    set did = #{did,jdbcType=VARCHAR},
+      iid = #{iid,jdbcType=VARCHAR},
+      dimoney = #{dimoney,jdbcType=REAL},
+      distate = #{distate,jdbcType=INTEGER}
+    where idoid = #{idoid,jdbcType=INTEGER}
+  </update>
+
+</mapper>

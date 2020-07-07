@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.donate.mapper.PatientMapper">
+  <resultMap id="BaseResultMap" type="com.example.donate.bean.Patient">
+    <id column="pid" jdbcType="CHAR" property="pid" />
+    <result column="pname" jdbcType="VARCHAR" property="pname" />
+    <result column="ptel" jdbcType="VARCHAR" property="ptel" />
+    <result column="phome" jdbcType="VARCHAR" property="phome" />
+    <result column="pstory" jdbcType="VARCHAR" property="pstory" />
+    <result column="psick" jdbcType="VARCHAR" property="psick" />
+    <result column="ptreat" jdbcType="VARCHAR" property="ptreat" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    pid, pname, ptel, phome, pstory, psick, ptreat
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from patient
+    where pid = #{pid,jdbcType=CHAR}
+  </select>
+  <select id="showList" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from patient
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from patient
+    where pid = #{pid,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.example.donate.bean.Patient">
+    insert into patient (pid, pname, ptel, 
+      phome, pstory, psick, 
+      ptreat)
+    values (#{pid,jdbcType=CHAR}, #{pname,jdbcType=VARCHAR}, #{ptel,jdbcType=VARCHAR}, 
+      #{phome,jdbcType=VARCHAR}, #{pstory,jdbcType=VARCHAR}, #{psick,jdbcType=VARCHAR}, 
+      #{ptreat,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.donate.bean.Patient">
+    insert into patient
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pid != null">
+        pid,
+      </if>
+      <if test="pname != null">
+        pname,
+      </if>
+      <if test="ptel != null">
+        ptel,
+      </if>
+      <if test="phome != null">
+        phome,
+      </if>
+      <if test="pstory != null">
+        pstory,
+      </if>
+      <if test="psick != null">
+        psick,
+      </if>
+      <if test="ptreat != null">
+        ptreat,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pid != null">
+        #{pid,jdbcType=CHAR},
+      </if>
+      <if test="pname != null">
+        #{pname,jdbcType=VARCHAR},
+      </if>
+      <if test="ptel != null">
+        #{ptel,jdbcType=VARCHAR},
+      </if>
+      <if test="phome != null">
+        #{phome,jdbcType=VARCHAR},
+      </if>
+      <if test="pstory != null">
+        #{pstory,jdbcType=VARCHAR},
+      </if>
+      <if test="psick != null">
+        #{psick,jdbcType=VARCHAR},
+      </if>
+      <if test="ptreat != null">
+        #{ptreat,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.donate.bean.Patient">
+    update patient
+    <set>
+      <if test="pname != null">
+        pname = #{pname,jdbcType=VARCHAR},
+      </if>
+      <if test="ptel != null">
+        ptel = #{ptel,jdbcType=VARCHAR},
+      </if>
+      <if test="phome != null">
+        phome = #{phome,jdbcType=VARCHAR},
+      </if>
+      <if test="pstory != null">
+        pstory = #{pstory,jdbcType=VARCHAR},
+      </if>
+      <if test="psick != null">
+        psick = #{psick,jdbcType=VARCHAR},
+      </if>
+      <if test="ptreat != null">
+        ptreat = #{ptreat,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where pid = #{pid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.donate.bean.Patient">
+    update patient
+    set pname = #{pname,jdbcType=VARCHAR},
+      ptel = #{ptel,jdbcType=VARCHAR},
+      phome = #{phome,jdbcType=VARCHAR},
+      pstory = #{pstory,jdbcType=VARCHAR},
+      psick = #{psick,jdbcType=VARCHAR},
+      ptreat = #{ptreat,jdbcType=VARCHAR}
+    where pid = #{pid,jdbcType=CHAR}
+  </update>
+</mapper>

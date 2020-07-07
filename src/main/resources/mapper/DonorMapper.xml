@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.donate.mapper.DonorMapper">
+  <resultMap id="BaseResultMap" type="com.example.donate.bean.Donor">
+    <id column="did" jdbcType="VARCHAR" property="did" />
+    <result column="dname" jdbcType="VARCHAR" property="dname" />
+    <result column="dtel" jdbcType="VARCHAR" property="dtel" />
+    <result column="dsummoney" jdbcType="VARCHAR" property="dsummoney" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    did, dname, dtel, dsummoney
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from donor
+    where did = #{did,jdbcType=VARCHAR}
+  </select>
+  <select id="showList" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from donor
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from donor
+    where did = #{did,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.example.donate.bean.Donor">
+    insert into donor (did, dname, dtel, 
+      dsummoney)
+    values (#{did,jdbcType=VARCHAR}, #{dname,jdbcType=VARCHAR}, #{dtel,jdbcType=VARCHAR}, 
+      #{dsummoney,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.donate.bean.Donor">
+    insert into donor
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="did != null">
+        did,
+      </if>
+      <if test="dname != null">
+        dname,
+      </if>
+      <if test="dtel != null">
+        dtel,
+      </if>
+      <if test="dsummoney != null">
+        dsummoney,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="did != null">
+        #{did,jdbcType=VARCHAR},
+      </if>
+      <if test="dname != null">
+        #{dname,jdbcType=VARCHAR},
+      </if>
+      <if test="dtel != null">
+        #{dtel,jdbcType=VARCHAR},
+      </if>
+      <if test="dsummoney != null">
+        #{dsummoney,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.donate.bean.Donor">
+    update donor
+    <set>
+      <if test="dname != null">
+        dname = #{dname,jdbcType=VARCHAR},
+      </if>
+      <if test="dtel != null">
+        dtel = #{dtel,jdbcType=VARCHAR},
+      </if>
+      <if test="dsummoney != null">
+        dsummoney = #{dsummoney,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where did = #{did,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.donate.bean.Donor">
+    update donor
+    set dname = #{dname,jdbcType=VARCHAR},
+      dtel = #{dtel,jdbcType=VARCHAR},
+      dsummoney = #{dsummoney,jdbcType=VARCHAR}
+    where did = #{did,jdbcType=VARCHAR}
+  </update>
+  <update id = "updateDsummoney" parameterType="com.example.donate.bean.Donor">
+    update donor
+    set dsummoney = (
+    select tmp_sum
+    from(
+	    select did,sum(dimoney) as tmp_sum
+	    from idonate
+	    where distate = 1
+	    group by did
+	)as tmp
+	where donor.did = tmp.did
+    )
+  </update>
+</mapper>

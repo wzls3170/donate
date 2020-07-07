@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta name="description"
+          content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+    <!-- Twitter meta-->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:site" content="@pratikborsadiya">
+    <meta property="twitter:creator" content="@pratikborsadiya"><!-- Open Graph Meta-->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Vali Admin">
+    <meta property="og:title" content="Vali - Free Bootstrap 4 admin theme">
+    <meta property="og:url" content="http://pratikborsadiya.in/blog/vali-admin">
+    <meta property="og:description"
+          content="Vali is a responsive and free admin theme built with Bootstrap 4, SASS and PUG.js. It's fully customizable and modular.">
+    <title>捐款管理  - 众筹公益平台</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="../../../static/css/main.css"><!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+      <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+      <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+</head>
+  <body class="app sidebar-mini"><!-- Topbar menu-->
+  <div th:replace="~{commons/bar::topbar}"></div><!-- Sidebar menu-->
+  <div th:replace="~{commons/bar::sidebar}"></div>
+
+
+  <main class="app-content">
+      <div th:include="~{commons/bar::breadcrumb}"></div>
+      <div class="row">
+          <div class="col-md-12">
+              <div class="tile">
+                  <form action="list.html" th:action="@{/idonate}" method="post">
+                      <div class="row">
+                          <div class="col-lg-4">
+                              <input type="hidden" name="_method" value="put" th:if="${idonate!=null}"/>
+                              <div class="form-group">
+                                  <!--必须加上，不然update无法执行-->
+                                  <label class="col-form-label" for="idoid"></label>
+                                  <input class="form-control" id="idoid" name="idoid" type="hidden" th:value="${idonate!=null}?${idonate.idoid}">
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="item.iid">众筹项目ID</label>
+                                  <select class="form-control" id="item.iid" name="item.iid">
+                                      <!--th:text是显示的内容，th.value提交的内容-->
+                                      <option th:selected="${idonate!=null}?${item.iid == idonate.item.iid}" th:value="${item.iid}" th:each="item:${items}" th:text="${item.iid}+' '+ ${item.iname}"></option>
+                                  </select>
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="donor.did">捐款人ID</label>
+                                  <select class="form-control" id="donor.did" name="donor.did">
+                                      <!--th:text是显示的内容，th.value提交的内容-->
+                                      <option th:selected="${idonate!=null}?${donor.did == idonate.donor.did}" th:value="${donor.did}" th:each="donor:${donors}" th:text="${donor.did}+' '+ ${donor.dname}"></option>
+                                  </select>
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="dimoney">捐款金额</label>
+                                  <input class="form-control" id="dimoney" name="dimoney" type="text" th:value="${idonate!=null}?${idonate.dimoney}">
+                              </div>
+                              <div class="form-group">
+                                  <label class="col-form-label" for="distate">审核状态</label>
+                                  <select class="form-control" id="distate" name="distate" >
+                                      <!--th:text是显示的内容，th.value提交的内容-->
+                                      <option th:selected="${idonate!=null}?${idonate.distate==2}" th:value="2">未审核</option>
+                                      <option th:selected="${idonate!=null}?${idonate.distate==0}" th:value="0">审核不通过</option>
+                                      <option th:selected="${idonate!=null}?${idonate.distate==1}" th:value="1">审核通过</option>
+                                  </select>
+                              </div>
+                              <div class="tile-footer">
+                                  <button class="btn btn-primary" type="submit" th:text="${idonate!=null}?'修改':'添加'">添加</button>
+                                  <a class="btn btn-danger" th:href="@{/idonates}">返回</a>
+                              </div>
+                          </div>
+
+                      </div>
+                  </form>
+
+              </div>
+          </div>
+      </div>
+  </main>
+  <!-- Essential javascripts for application to work-->
+  <script src="../../../static/js/jquery-3.3.1.min.js"></script>
+  <script src="../../../static/js/popper.min.js"></script>
+  <script src="../../../static/js/bootstrap.min.js"></script>
+  <script src="../../../static/js/main.js"></script><!-- The javascript plugin to display page loading on top-->
+  <script src="../../../static/js/plugins/pace.min.js"></script><!-- Page specific javascripts--><!-- Data table plugin-->
+  <script type="text/javascript" src="../../../static/js/plugins/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="../../../static/js/plugins/dataTables.bootstrap.min.js"></script>
+  <script src="../../../static/js/plugins/moment-with-locales.min.js"></script>
+  <script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+
+  <script type="text/javascript">$('#sampleTable').DataTable();</script><!-- Google analytics script-->
+  <script type="text/javascript"> if (document.location.hostname == 'pratikborsadiya.in') {
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'UA-72504830-1', 'auto');
+    ga('send', 'pageview');
+}</script>
+  </body>
+</html>
